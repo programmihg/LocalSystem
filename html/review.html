@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <title>HTML Преговор</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <nav id="main-nav" class="nav-bar top">
+        <div class="nav-left">
+            <div class="nav-group">
+                <button id="section-prev" class="nav-btn small">«</button>
+                <div class="nav-label">Раздел <span id="section-title">HTML</span></div>
+                <button id="section-next" class="nav-btn small">»</button>
+            </div>
+            <div class="nav-divider"></div>
+            <div class="nav-group">
+                <button id="page-prev" class="nav-btn small">‹</button>
+                <div class="nav-label">Страница <span id="page-num">Review</span></div>
+                <button id="page-next" class="nav-btn small">›</button>
+            </div>
+        </div>
+        <div class="nav-right">
+            <div class="search-container">
+                <button id="search-mode-btn" class="search-icon">🔍</button>
+                <input type="text" id="site-search" placeholder="Търси...">
+            </div>
+        </div>
+    </nav>
+    <button id="nav-toggle-move" class="at-top"><span class="toggle-icon">▼</span></button>
+    
+    <main id="review-container">
+        <div class="reset-container">
+            <button class="btn-reset" onclick="smartReset()">Нулирай прогреса</button>
+        </div>
+        <a href="/html/index.html">Раздел HTML: Въведение</a><br>
+        <h1>Всички карти за раздела</h1>
+        </main>
+    <script src="/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <title>NETWORK Преговор</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <nav id="main-nav" class="nav-bar top">
+        <div class="nav-left">
+            <div class="nav-group">
+                <button id="section-prev" class="nav-btn small">«</button>
+                <div class="nav-label">Раздел <span id="section-title">NETWORK</span></div>
+                <button id="section-next" class="nav-btn small">»</button>
+            </div>
+            <div class="progress-container">
+                <div id="progress-bar" class="progress-bar"></div>
+                <span id="progress-text">0%</span>
+            </div>
+            <!-- <div class="nav-divider"></div> -->
+            <div class="nav-group">
+                <button id="page-prev" class="nav-btn small">‹</button>
+                <div class="nav-label">Страница <span id="page-num">Review</span></div>
+                <button id="page-next" class="nav-btn small">›</button>
+            </div>
+        </div>
+        <div class="nav-right">
+            <div class="search-container">
+                <button id="search-mode-btn" class="search-icon">🔍</button>
+                <input type="text" id="site-search" placeholder="Търси...">
+            </div>
+        </div>
+    </nav>
+    <button id="nav-toggle-move" class="at-top"><span class="toggle-icon">▼</span></button>
+    <main id="review-container"> <a href="/net/index.html">Раздел NETWORK: Въведение</a><br>        
+        <a href="/net/index.html">Раздел NETWORK: Въведение</a><br>
+        <h1>Всички флашкарти за NETWORK</h1>
+        <div class="reset-container">
+            <button class="btn-reset" onclick="smartReset()">Нулирай прогреса</button>
+        </div>
+    </main>
+    <script src="/script.js"></script>
+</body>
+</html>

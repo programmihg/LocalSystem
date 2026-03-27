@@ -1,0 +1,232 @@
+:root {
+    --bg-dark: #1a1a1a;
+    --nav-bg: rgba(26, 26, 26, 0.95);
+    --accent-green: #4CAF50;
+    --text-light: #ffffff;
+    --text-muted: #a0a0a0;
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-light);
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    padding: 100px 0;
+    line-height: 1.6;
+}
+
+body:has(.nav-bar.bottom) { padding-top: 20px; padding-bottom: 100px; }
+
+/* --- НАВИГАЦИЯ --- */
+/* ПРАВИЛНА ЗАМЯНА */
+.nav-bar {
+    position: fixed; 
+    left: 0; 
+    width: 100%; 
+    height: 75px;
+    background: var(--nav-bg); 
+    backdrop-filter: blur(12px);
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between;
+    padding: 0 10px; 
+    z-index: 8000; 
+    /* Новата анимация, която включва top и bottom */
+    transition: transform 0.3s ease, top 0.4s ease, bottom 0.4s ease;
+}
+
+/* --- НАВИГАЦИЯ ПОЗИЦИИ --- */
+.nav-bar.top { 
+    top: 0 !important; 
+    bottom: auto !important; 
+    border-bottom: 2px solid var(--accent-green); 
+    border-top: none;
+}
+
+.nav-bar.bottom { 
+    bottom: 0 !important; 
+    top: auto !important; 
+    border-top: 2px solid var(--accent-green); 
+    border-bottom: none;
+}
+/* .nav-bar.collapsed.top { transform: translateY(-100%); }
+.nav-bar.collapsed.bottom { transform: translateY(100%); } */
+
+.nav-bar.collapsed.top { transform: translateY(-100%); }
+.nav-bar.collapsed.bottom { transform: translateY(100%); }
+
+
+.nav-left {
+    display: flex;
+    align-items: center;
+    gap: 5px; /* Повече разстояние между групите */
+    flex: 1;   /* Позволява на лявата част да заеме мястото си */
+}
+.nav-group {
+    display: flex; align-items: center; gap: 10px;
+    background: rgba(255, 255, 255, 0.03);
+    padding: 5px 8px; border-radius: 8px; border: 1px solid #333;
+    max-width: 293px;
+    min-height: 55px;
+    max-height: 55px;
+}
+
+.nav-label { 
+    font-size: 0.7rem; 
+    color: var(--text-muted); 
+    text-align: center;
+    white-space: nowrap;    /* Пречи на текста да отиде на нов ред */
+    overflow: hidden;       /* Скрива излишния текст */
+    text-overflow: ellipsis; /* Добавя "..." накрая, ако е твърде дълго */
+ }
+.nav-label span { display: block; color: var(--accent-green); font-weight: bold; font-size: 0.85rem; }
+
+.nav-btn {
+    background: #222; border: 1px solid var(--accent-green);
+    color: var(--accent-green); cursor: pointer; width: 32px; height: 32px;
+    border-radius: 6px; font-weight: bold; transition: 0.2s;
+}
+.nav-btn:hover { background: var(--accent-green); color: white; }
+
+/* --- КОНТРОЛЕН БУТОН --- */
+#nav-toggle-move {
+    position: fixed; left: 50%; transform: translateX(-50%);
+    background: #111; border: 1px solid var(--accent-green);
+    color: var(--accent-green); padding: 2px 50px; cursor: pointer;
+    z-index: 9999; transition: var(--transition);
+}
+#nav-toggle-move.at-top { 
+    top: 0; 
+    bottom: auto; /* Освобождава долната част */
+    border-top: none; 
+    border-radius: 0 0 12px 12px; 
+}
+
+#nav-toggle-move.at-bottom { 
+    bottom: 0; 
+    top: auto; /* Освобождава горната част */
+    border-bottom: none; 
+    border-radius: 12px 12px 0 0; 
+}
+
+/* .nav-bar:not(.collapsed).top ~ #nav-toggle-move { top: 75px; }
+.nav-bar:not(.collapsed).bottom ~ #nav-toggle-move { bottom: 75px; } */
+
+/* Когато лентата е горе и е отворена, бутонът се мести под нея */
+.nav-bar.top:not(.collapsed) ~ #nav-toggle-move { 
+    top: 75px !important; 
+    bottom: auto !important; 
+}
+
+/* Когато лентата е долу и е отворена, бутонът се мести над нея */
+.nav-bar.bottom:not(.collapsed) ~ #nav-toggle-move { 
+    bottom: 75px !important; 
+    top: auto !important; 
+}
+
+/* Вертикален Прогрес-Разделител */
+.progress-container {
+    width: 4px;             /* Много тънка линия */
+    height: 40px;           /* Височина, съобразена с nav-group */
+    background: #333;       /* Тъмен фон (незапълнено) */
+    border-radius: 2px;
+    position: relative;
+    overflow: hidden;
+    margin: 0 15px;         /* Разстояние между съседните елементи */
+    align-self: center;
+}
+
+.progress-bar {
+    width: 100%;            /* Заема цялата ширина на контейнера */
+    height: 0%;             /* Започва от 0% височина */
+    position: absolute;
+    bottom: 0;              /* Запълва се отдолу нагоре */
+    background: var(--accent-green); /* Твоето зелено */
+    box-shadow: 0 0 8px var(--accent-green); /* Леко сияние */
+    transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Скриваме текста с процентите, тъй като вече няма място за него */
+#progress-text {
+    display: none;
+}
+
+/* Стилизиране на иконата за по-добра видимост */
+.toggle-icon {
+    display: inline-block;
+    transition: transform 0.3s ease;
+    font-size: 12px;
+}
+
+/* --- ТЪРСАЧКА --- */
+.search-container {
+    display: flex; align-items: center;
+    background: #252525; border-radius: 20px;
+    padding: 5px 15px; border: 1px solid var(--accent-green);
+}
+#site-search { background: transparent; border: none; color: white; outline: none; width: 150px; margin-left: 10px; }
+.search-icon { background: transparent; border: none; cursor: pointer; color: var(--accent-green); }
+
+.search-container {
+    /* ... твоите досегашни стилове ... */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Можеш да добавиш и леко сияние (glow) в цвета на режима */
+.search-container:focus-within {
+    box-shadow: 0 0 8px var(--accent-green); /* тук може да се ползва и променлива за цвета */
+}
+
+/* --- ФЛАШКАРТИ --- */
+.flashcard {
+    width: 100%; background: #1e1e1e;
+    border: 1px solid #333; border-radius: 8px;
+    margin-bottom: 15px; overflow: hidden; transition: opacity 0.3s;
+}
+
+.card-header, .content {
+    display: flex; justify-content: space-between;
+    align-items: center; padding: 15px;
+}
+
+.content { display: none; border-top: 1px dashed #444; background: #252525; }
+
+.flashcard.step-1 .summary { display: flex; }
+.flashcard.step-2 .detail { display: flex; }
+.flashcard.step-2 .summary .expand-btn { display: none; }
+.hidden-card { display: none !important; }
+
+.expand-btn {
+    background: #2ecc71; color: white; border: none;
+    border-radius: 50%; width: 30px; height: 30px;
+    cursor: pointer; transition: 0.3s; font-weight: bold;
+}
+
+.learned-btn {
+    background: #333; color: #888; border: 1px solid #444;
+    padding: 5px 10px; border-radius: 4px; cursor: pointer; margin-right: 10px;
+}
+.learned-btn:hover { background: var(--accent-green); color: white; }
+
+/* Review страница стилове */
+.review-lesson-title {
+    border-left: 4px solid var(--accent-green);
+    padding-left: 15px; margin: 40px 0 20px 0;
+    font-size: 1.1rem; color: var(--accent-green);
+}
+
+.reset-container { text-align: right; margin-bottom: 20px; padding: 0 20px; }
+.btn-reset { background: transparent; border: 1px solid #444; color: var(--text-muted); padding: 5px 15px; border-radius: 4px; cursor: pointer; }
+.btn-reset:hover { border-color: var(--accent-green); color: white; }
+
+main { max-width: 1000px; margin: 0 auto; padding: 40px 20px; }
+h1 { font-size: 2.2rem; color: var(--accent-green); text-align: center; margin-bottom: 30px; }
+
+mark {
+    background-color: #ffeb3b; /* Ярко жълто */
+    color: #000;              /* Черен текст за контраст */
+    border-radius: 2px;
+    padding: 0 2px;
+}

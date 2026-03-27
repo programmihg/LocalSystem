@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <title>NETWORK Урок 1</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <nav id="main-nav" class="nav-bar top">
+        <div class="nav-left">
+            <div class="nav-group">
+                <button id="section-prev" class="nav-btn small">«</button>
+                <div class="nav-label">Раздел <span id="section-title">NETWORK</span></div>
+                <button id="section-next" class="nav-btn small">»</button>
+            </div>
+            <div class="progress-container">
+                <div id="progress-bar" class="progress-bar"></div>
+                <span id="progress-text">100%</span>
+            </div>
+            <!-- <div class="nav-divider"></div> -->
+            <div class="nav-group">
+                <button id="page-prev" class="nav-btn small">‹</button>
+                <div class="nav-label">Страница <span id="page-num"></span></div>
+                <button id="page-next" class="nav-btn small">›</button>
+            </div>
+        </div>
+        <div class="nav-right">
+            <div class="search-container">
+                <button id="search-mode-btn" class="search-icon">🔍</button>
+                <input type="text" id="site-search" placeholder="Търси...">
+            </div>
+        </div>
+    </nav>
+    <button id="nav-toggle-move" class="at-top">
+        <span class="toggle-icon">▼</span>
+    </button>
+    <main>
+        <a href="/net/index.html">Раздел NETWORK: Въведение</a> / /  
+        <a href="/net/lessons/lesson2.html">Към Урок 2</a> / / 
+        <a href="/net/review.html">Преговор: Всички флашкарти за NETWORK</a>
+
+        <h1>1. Основи на компютърните мрежи</h1>
+
+        <div class="reset-container">
+            <button class="btn-reset" onclick="smartReset()">Нулирай прогреса</button>
+        </div>
+        
+        <div class="flashcard">
+            <div class="card-header">
+                <span class="question">Какво представлява OSI моделът?</span>
+                <div class="card-controls">
+                    <button class="learned-btn" onclick="markAsLearned(this)">✓</button>
+                    <button class="expand-btn" onclick="toggleCard(this, 1)">></button>
+                </div>
+            </div>
+            <div class="content summary">
+                <p>Теоретичен модел от 7 слоя за мрежова комуникация.</p>
+                <button class="expand-btn" onclick="toggleCard(this, 2)">></button>
+            </div>
+            <div class="content detail">
+                <p>Слоевете са: Физически, Канален, Мрежов, Транспортен, Сесиен, Представителен и Приложен. Всеки слой има специфични протоколи като IP (Мрежов) и TCP (Транспортен).</p>
+            </div>
+        </div>
+        
+        <div class="flashcard">
+            <div class="card-header">
+                <span class="question">Каква е разликата между IPv4 и IPv6?</span>
+                <div class="card-controls">
+                    <button class="learned-btn" onclick="markAsLearned(this)">✓</button>
+                    <button class="expand-btn" onclick="toggleCard(this, 1)">></button>
+                </div>
+            </div>
+            <div class="content summary">
+                <p>Дължината на адреса и броят на възможните комбинации.</p>
+                <button class="expand-btn" onclick="toggleCard(this, 2)">></button>
+            </div>
+            <div class="content detail">
+                <p>IPv4 използва 32-битови адреси (напр. 192.168.1.1), докато IPv6 използва 128-битови хексадесетични адреси, осигурявайки почти безкраен брой уникални идентификатори за устройства в глобалната мрежа.</p>
+            </div>
+        </div>
+        
+        <div class="flashcard">
+            <div class="card-header">
+                <span class="question">Каква е основната функция на Рутера (Router)?</span>
+                <div class="card-controls">
+                    <button class="learned-btn" onclick="markAsLearned(this)">✓</button>
+                    <button class="expand-btn" onclick="toggleCard(this, 1)">></button>
+                </div>
+            </div>
+            <div class="content summary">
+                <p>Свързва различни мрежи и насочва пакетите данни.</p>
+                <button class="expand-btn" onclick="toggleCard(this, 2)">></button>
+            </div>
+            <div class="content detail">
+                <p>Рутерът работи на 3-ти слой (Мрежов) и използва IP таблици за маршрутизация, за да намери най-добрия път за данните между локалната мрежа и Интернет.</p>
+            </div>
+        </div>
+    </main>
+    <script src="/script.js"></script>
+</body>
+</html>

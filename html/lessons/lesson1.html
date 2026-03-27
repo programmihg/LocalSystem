@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <title>HTML Урок 1</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <nav id="main-nav" class="nav-bar top">
+        <div class="nav-left">
+            <div class="nav-group">
+                <button id="section-prev" class="nav-btn small">«</button>
+                <div class="nav-label">Раздел <span id="section-title">HTML</span></div>
+                <button id="section-next" class="nav-btn small">»</button>
+            </div>
+            <div class="nav-divider"></div>
+            <div class="nav-group">
+                <button id="page-prev" class="nav-btn small">‹</button>
+                <div class="nav-label">Страница <span id="page-num"></span></div>
+                <button id="page-next" class="nav-btn small">›</button>
+            </div>
+        </div>
+        <div class="nav-right">
+            <div class="search-container">
+                <button id="search-mode-btn" class="search-icon">🔍</button>
+                <input type="text" id="site-search" placeholder="Търси...">
+            </div>
+        </div>
+    </nav>
+    <button id="nav-toggle-move" class="at-top" onclick="toggleNav()">↕</button>
+    <main id="review-container">
+
+        <div class="reset-container">
+            <button class="btn-reset" onclick="smartReset()">Нулирай прогреса</button>
+        </div>
+        <a href="/html/index.html">Раздел HTML: Въведение</a> / /  
+        <a href="/html/lessons/lesson2.html">Към Урок 2</a> / / 
+        <a href="/html/review.html">Преговор: Всички флашкарти за HTML</a>
+
+
+        <h1>Урок 1 Съдържание</h1>
+        <p>Тук е вашият урок.</p>
+
+        <div class="flashcard">
+            <div class="card-header">
+                <span class="question">Какво е HTML?</span>
+                <div class="card-controls">
+                    <button class="learned-btn" onclick="markAsLearned(this)">✓</button>
+                    <button class="expand-btn" onclick="toggleCard(this, 1)">></button>
+                </div>
+            </div>
+            
+            <div class="content summary">
+                <p>Език за маркиране на хипертекст.</p>
+                <button class="expand-btn" onclick="toggleCard(this, 2)">></button>
+            </div>
+        
+            <div class="content detail">
+                <p>Използва се за структура на уеб страници чрез тагове като div, p, h1.</p>
+            </div>
+        </div>
+    </main>
+    <script src="/script.js"></script>
+</body>
+</html>
