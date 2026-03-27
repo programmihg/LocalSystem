@@ -276,8 +276,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 const term = searchInput.value.trim();
                 if (term !== "" && currentSearchMode > 0) {
                     const isSection = (currentSearchMode === 1);
-                    const siteConstraint = isSection ? `site:127.0.0.1:5501/${currentCat.folder}/` : `site:127.0.0.1:5501/`;
-                    const googleUrl = `https://www.google.com/search?q=${encodeURIComponent(term)}+${encodeURIComponent(siteConstraint)}`;
+                    // const siteConstraint = isSection ? `site:127.0.0.1:5501/${currentCat.folder}/` : `site:127.0.0.1:5501/`;
+                    // Намери този ред и го промени на:
+                    const siteConstraint = isSection ? `site:programmihg.github.io/LocalSystem/${currentCat.folder}/` : `site:programmihg.github.io/LocalSystem/`;                    const googleUrl = `https://www.google.com/search?q=${encodeURIComponent(term)}+${encodeURIComponent(siteConstraint)}`;
                     window.open(googleUrl, '_blank');
                 }
             }
