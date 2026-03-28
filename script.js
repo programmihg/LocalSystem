@@ -80,6 +80,10 @@ function smartReset() {
 // ==========================================
 document.addEventListener('DOMContentLoaded', () => {
     const path = window.location.pathname;
+    const isLocal = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost';
+    // Базов път: Ако сме в GitHub, добавяме името на проекта
+    const baseRoot = isLocal ? '' : '/LocalSystem';
+
     const nav = document.getElementById('main-nav');
     const toggleBtn = document.getElementById('nav-toggle-move');
 
@@ -91,52 +95,48 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 'html', folder: 'html', name: 'HTML', totalLessons: 3 },
         { id: 'css', folder: 'css', name: 'CSS', totalLessons: 2 },
         { id: 'js', folder: 'js', name: 'JAVASCRIPT', totalLessons: 2 },
+        { id: 'py', folder: 'py', name: 'PYTHON', totalLessons: 2 },
+        { id: 'php', folder: 'php', name: 'PHP', totalLessons: 2 },
+        { id: 'sql', folder: 'sql', name: 'SQL', totalLessons: 2 },
         { id: 'ai', folder: 'ai', name: 'AI', totalLessons: 2 }
     ];
 
+    // Коригирано намиране на категорията за GitHub и Local
     let currentCatIndex = categories.findIndex(c => {
-        if (c.folder === '') return path === '/' || path === '/index.html';
+        if (c.folder === '') {
+            return path.endsWith(baseRoot + '/') || path.endsWith('/index.html');
+        }
         return path.includes('/' + c.folder + '/');
     });
+    
     if (currentCatIndex === -1) currentCatIndex = 0;
     const currentCat = categories[currentCatIndex];
 
-    // --- ФУНКЦИЯ ЗА ОБНОВЯВАНЕ НА ИКОНАТА И ПОЗИЦИЯТА ---
     function refreshNavVisuals() {
         if (!nav || !toggleBtn) return;
-        
         const isTop = nav.classList.contains('top');
         const isCollapsed = nav.classList.contains('collapsed');
         const icon = toggleBtn.querySelector('.toggle-icon');
-
-        // Клас за позицията на бутончето
         toggleBtn.className = isTop ? 'at-top' : 'at-bottom';
-
         if (icon) {
             if (isTop) {
-                // Горе: Отворена = ▲ (нагоре), Скрита = ▼ (надолу)
                 icon.textContent = isCollapsed ? '▼' : '▲';
             } else {
-                // Долу: Отворена = ▼ (надолу), Скрита = ▲ (нагоре)
                 icon.textContent = isCollapsed ? '▲' : '▼';
             }
         }
     }
 
-    // --- НАСТРОЙКА НА МЕНЮТО ПРИ ЗАРЕЖДАНЕ ---
     if (nav && toggleBtn) {
         const savedPos = localStorage.getItem('navPos') || 'top';
         const savedCollapsed = localStorage.getItem('navCollapsed') === 'true';
-
         nav.classList.remove('top', 'bottom', 'collapsed');
         nav.classList.add(savedPos);
         if (savedCollapsed) nav.classList.add('collapsed');
-
         refreshNavVisuals();
 
         let navClicks = 0;
         let navTimer;
-
         toggleBtn.onclick = (e) => {
             e.preventDefault();
             navClicks++;
@@ -160,60 +160,54 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     }
 
-    // --- НАВИГАЦИЯ (СТРЕЛКИ) - ОПТИМИЗИРАНА ВЕРСИЯ ---
+    // --- НАВИГАЦИЯ (СТРЕЛКИ) С АДАПТИВНИ ПЪТИЩА ---
     const lessonMatch = path.match(/lesson(\d+)\.html/);
     const currentLessonNum = lessonMatch ? parseInt(lessonMatch[1]) : 0;
-    const isIndex = path.includes('index.html');
+    const isIndex = path.includes('index.html') || path.endsWith(baseRoot + '/');
     const isReview = path.includes('review.html');
 
     smartNav('page-next', 
         () => {
-            if (isIndex) {
-                // От Index към Урок 1
-                window.location.href = `/${currentCat.folder}/lessons/lesson1.html`;
+            if (isIndex && currentCat.folder !== '') {
+                window.location.href = `${baseRoot}/${currentCat.folder}/lessons/lesson1.html`;
             } else if (currentLessonNum > 0 && currentLessonNum < currentCat.totalLessons) {
-                // От текущ урок към следващ
-                window.location.href = `/${currentCat.folder}/lessons/lesson${currentLessonNum + 1}.html`;
+                window.location.href = `${baseRoot}/${currentCat.folder}/lessons/lesson${currentLessonNum + 1}.html`;
             } else if (currentLessonNum === currentCat.totalLessons) {
-                // От последен урок към Review
-                window.location.href = `/${currentCat.folder}/review.html`;
+                window.location.href = `${baseRoot}/${currentCat.folder}/review.html`;
             }
-            // Ако сме в Review, бутонът спира да действа (правилно)
         },
-        () => { window.location.href = `/${currentCat.folder}/review.html`; }
+        () => { if(currentCat.folder !== '') window.location.href = `${baseRoot}/${currentCat.folder}/review.html`; }
     );
 
     smartNav('page-prev', 
         () => {
             if (isReview) {
-                // От Review към последен урок
-                window.location.href = `/${currentCat.folder}/lessons/lesson${currentCat.totalLessons}.html`;
+                window.location.href = `${baseRoot}/${currentCat.folder}/lessons/lesson${currentCat.totalLessons}.html`;
             } else if (currentLessonNum > 1) {
-                // От текущ урок към предишен
-                window.location.href = `/${currentCat.folder}/lessons/lesson${currentLessonNum - 1}.html`;
+                window.location.href = `${baseRoot}/${currentCat.folder}/lessons/lesson${currentLessonNum - 1}.html`;
             } else if (currentLessonNum === 1) {
-                // От Урок 1 към Index
-                window.location.href = `/${currentCat.folder}/index.html`;
+                window.location.href = `${baseRoot}/${currentCat.folder}/index.html`;
             }
-            // Ако сме в Index, бутонът спира да действа (правилно)
         },
-        () => { window.location.href = `/${currentCat.folder}/index.html`; }
+        () => { if(currentCat.folder !== '') window.location.href = `${baseRoot}/${currentCat.folder}/index.html`; }
     );
 
     smartNav('section-next', 
         () => {
             const nextIdx = (currentCatIndex + 1) % categories.length;
-            window.location.href = categories[nextIdx].folder === '' ? '/index.html' : `/${categories[nextIdx].folder}/index.html`;
+            const targetFolder = categories[nextIdx].folder;
+            window.location.href = targetFolder === '' ? `${baseRoot}/index.html` : `${baseRoot}/${targetFolder}/index.html`;
         },
-        () => { window.location.href = '/ai/index.html'; }
+        () => { window.location.href = `${baseRoot}/ai/index.html`; }
     );
 
     smartNav('section-prev', 
         () => {
             const prevIdx = (currentCatIndex - 1 + categories.length) % categories.length;
-            window.location.href = categories[prevIdx].folder === '' ? '/index.html' : `/${categories[prevIdx].folder}/index.html`;
+            const targetFolder = categories[prevIdx].folder;
+            window.location.href = targetFolder === '' ? `${baseRoot}/index.html` : `${baseRoot}/${targetFolder}/index.html`;
         },
-        () => { window.location.href = '/index.html'; }
+        () => { window.location.href = `${baseRoot}/index.html`; }
     );
 
     // --- ЕТИКЕТИ ---
@@ -226,7 +220,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (currentLessonNum > 0) {
             pageLabel.innerHTML = `${currentLessonNum}/${currentCat.totalLessons} <small style="opacity:0.6; font-size:0.75rem; margin-left:5px;">${h1Text}</small>`;
         } else {
-            pageLabel.innerText = path.includes('review.html') ? "Review" : "Index";
+            pageLabel.innerText = isReview ? "Review" : "Index";
         }
     }
 
@@ -244,25 +238,19 @@ document.addEventListener('DOMContentLoaded', () => {
             const cards = document.querySelectorAll('.flashcard');
 
             cards.forEach(card => {
-                // Вземаме оригиналния текст (премахваме предишни маркирания)
-                // Използваме скрит контейнер или чист текст, за да не повредим HTML структурата
                 const contentElements = card.querySelectorAll('p, h3, div'); 
                 let matchFound = false;
 
                 contentElements.forEach(el => {
-                    // Изчистваме старите <mark> тагове чрез просто връщане на чист текст
                     const originalText = el.textContent;
-                    
                     if (term !== "" && originalText.toLowerCase().includes(lowerTerm)) {
-                        // Регулярен израз за намиране на всички срещания (case-insensitive)
-                        const regex = new RegExp(`(${term})`, 'gi');
+                        const regex = new RegExp(`(${term.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&')})`, 'gi');
                         el.innerHTML = originalText.replace(regex, '<mark>$1</mark>');
                         matchFound = true;
                     } else {
                         el.innerHTML = originalText;
                     }
                 });
-
                 card.style.display = (term === "" || matchFound) ? "block" : "none";
             });
 
@@ -270,15 +258,15 @@ document.addEventListener('DOMContentLoaded', () => {
             if (sidebar) sidebar.style.opacity = term.length > 0 ? "0.2" : "1";
         });
 
-        // Google търсене при Enter
         searchInput.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
                 const term = searchInput.value.trim();
                 if (term !== "" && currentSearchMode > 0) {
                     const isSection = (currentSearchMode === 1);
-                    // const siteConstraint = isSection ? `site:127.0.0.1:5501/${currentCat.folder}/` : `site:127.0.0.1:5501/`;
-                    // Намери този ред и го промени на:
-                    const siteConstraint = isSection ? `site:programmihg.github.io/LocalSystem/${currentCat.folder}/` : `site:programmihg.github.io/LocalSystem/`;                    const googleUrl = `https://www.google.com/search?q=${encodeURIComponent(term)}+${encodeURIComponent(siteConstraint)}`;
+                    // Динамичен домейн за Google търсене
+                    const domain = isLocal ? '127.0.0.1:5501' : 'programmihg.github.io/LocalSystem';
+                    const siteConstraint = isSection ? `site:${domain}/${currentCat.folder}/` : `site:${domain}/`;
+                    const googleUrl = `https://www.google.com/search?q=${encodeURIComponent(term)}+${encodeURIComponent(siteConstraint)}`;
                     window.open(googleUrl, '_blank');
                 }
             }
