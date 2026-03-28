@@ -1,0 +1,15 @@
+# VS Code настройки
+.vscode/
+
+# Системни файлове
+Thumbs.db
+.DS_Store
+
+# Локални логове
+*.log
+
+# Ако използваш Node.js (за в бъдеще)
+node_modules/
+
+# Archive
+Archive/
